@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iron Bay Auto Care</title>
+<meta name="description" content="Iron Bay Auto Care — honest brake, engine, and diagnostic work with a written estimate before we touch a bolt, and the old part back in your hands.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --steel:#2C3338;
+    --panel:#383F45;
+    --orange:#E8622C;
+    --paper:#ECE7DD;
+    --grease:#17191B;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--steel);color:var(--paper);font-family:'Barlow',sans-serif;line-height:1.6;}
+  .wrap{max-width:960px;margin:0 auto;padding:0 28px;}
+  a{color:inherit;}
+  :focus-visible{outline:2px solid var(--orange);outline-offset:3px;}
+  .mono{font-family:'Space Mono',monospace;}
+
+  header{display:flex;justify-content:space-between;align-items:center;padding:24px 0;border-bottom:2px solid var(--panel);}
+  .logo{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:.02em;}
+  .logo span{color:var(--orange);}
+  nav a{margin-left:22px;font-size:13px;font-weight:600;text-decoration:none;text-transform:uppercase;letter-spacing:.04em;}
+  .btn{background:var(--orange);color:var(--grease);padding:10px 20px;font-weight:700;text-transform:uppercase;font-size:12.5px;letter-spacing:.05em;text-decoration:none;display:inline-block;}
+
+  /* HERO: giant torn work-order ticket with carbon copy peeking behind */
+  .hero{padding:70px 0 40px;position:relative;}
+  .ticket-stack{position:relative;max-width:520px;margin:36px auto 0;}
+  .carbon{
+    position:absolute;top:10px;left:10px;width:100%;height:100%;
+    background:var(--panel);border-radius:4px;z-index:0;
+  }
+  .worksheet{
+    position:relative;z-index:1;background:var(--paper);color:var(--grease);
+    border-radius:4px;padding:26px 28px;
+    box-shadow:0 10px 24px rgba(0,0,0,.35);
+  }
+  .worksheet-head{display:flex;justify-content:space-between;font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:#6b6355;border-bottom:1px dashed #b8ae98;padding-bottom:10px;margin-bottom:14px;}
+  .worksheet h1{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:30px;text-transform:uppercase;line-height:1.15;}
+  .worksheet p{color:#5c5548;font-size:14px;margin-top:10px;}
+  .perf{display:flex;gap:5px;margin-top:16px;}
+  .perf span{width:6px;height:6px;border-radius:50%;background:#c9c0a9;}
+
+  section{padding:56px 0;border-top:1px solid var(--panel);}
+  .eyebrow{font-family:'Space Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:10px;}
+  h2{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:28px;text-transform:uppercase;margin-bottom:22px;}
+
+  .table-wrap{overflow-x:auto;}
+  .workorder-table{width:100%;border-collapse:collapse;font-size:14px;}
+  .workorder-table th{
+    text-align:left;font-family:'Space Mono',monospace;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:#9aa1a7;
+    padding:10px 8px;border-bottom:2px solid var(--panel);
+  }
+  .workorder-table td{padding:13px 8px;border-bottom:1px solid var(--panel);}
+  .workorder-table td.price{font-family:'Space Mono',monospace;color:var(--orange);text-align:right;}
+  .workorder-table tr:last-child td{border-bottom:none;}
+
+  .inspected{
+    display:inline-flex;align-items:center;gap:8px;
+    border:2px solid var(--orange);color:var(--orange);border-radius:50%;
+    width:86px;height:86px;justify-content:center;text-align:center;
+    font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;text-transform:uppercase;line-height:1.2;
+    transform:rotate(-8deg);
+  }
+  .trust-row{display:flex;align-items:center;gap:24px;flex-wrap:wrap;}
+  .trust-row p{color:#b7bcc0;font-size:14.5px;max-width:380px;margin:0;}
+
+  footer{padding:28px 0;text-align:center;font-size:12.5px;color:#a3a9ad;}
+
+  @media(max-width:760px){
+    .worksheet h1{font-size:24px;}
+    .trust-row{flex-direction:column;text-align:center;}
+    .workorder-table{font-size:13px;}
+    .workorder-table th,.workorder-table td{padding:9px 6px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="logo">Iron Bay <span>Auto</span></div>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#" class="btn">Book a Bay</a>
+    </nav>
+  </header>
+
+  <section class="hero" style="border-top:none;">
+    <div class="ticket-stack">
+      <div class="carbon"></div>
+      <div class="worksheet">
+        <div class="worksheet-head"><span>Work Order No. 0142</span><span>Est. Time: Same Day</span></div>
+        <h1>Diagnosed right. Fixed once.</h1>
+        <p>Honest brake, engine, and diagnostic work from a shop that shows you the old part before it goes in the trash.</p>
+        <div class="perf">
+          <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:26px;">
+      <a href="#" class="btn">Book a Bay</a>
+    </div>
+  </section>
+
+  <section id="services">
+    <div class="eyebrow">Standard Work Order Rates</div>
+    <h2>What it costs, up front</h2>
+    <div class="table-wrap">
+    <table class="workorder-table">
+      <tr><th>Service</th><th>Turnaround</th><th class="mono">Price</th></tr>
+      <tr><td>Brake pads + rotor check</td><td class="mono">Same day</td><td class="price">from $180</td></tr>
+      <tr><td>Full diagnostic scan</td><td class="mono">45 min</td><td class="price">$65</td></tr>
+      <tr><td>Oil change + 20-pt inspection</td><td class="mono">30 min</td><td class="price">from $49</td></tr>
+      <tr><td>Check engine light diagnosis</td><td class="mono">Same day</td><td class="price">$85</td></tr>
+    </table>
+    </div>
+  </section>
+
+  <section>
+    <div class="trust-row">
+      <div class="inspected">SHOP<br>INSPECTED</div>
+      <p>Every job comes with a written estimate before we touch a bolt, and the old part back in your hands if you want to see it.</p>
+    </div>
+  </section>
+
+  <footer>Iron Bay Auto Care · Sample site built by Anchor Digital</footer>
+</div>
+</body>
+</html>
