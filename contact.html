@@ -60,22 +60,34 @@
       <div class="contact-card">
         <h3 style="margin-bottom:6px;">Request a free sample</h3>
         <p style="font-size:14.5px;margin-bottom:24px;">Fill this in and it opens an email with everything filled out — just hit send.</p>
-        <form id="sample-form" onsubmit="return buildEmail(event)">
+        <form id="sample-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+          <div class="field">
+            <label for="name">Your name *</label>
+            <input type="text" id="name" name="name" required placeholder="David Cole">
+          </div>
+          <div class="field">
+            <label for="email">Your email *</label>
+            <input type="email" id="email" name="email" required placeholder="you@yourbusiness.com">
+          </div>
           <div class="field">
             <label for="biz">Business name *</label>
-            <input type="text" id="biz" name="biz" required placeholder="Lett's Property Care">
+            <input type="text" id="biz" name="business" required placeholder="Lett's Property Care">
           </div>
           <div class="field">
             <label for="trade">What do you do? *</label>
             <input type="text" id="trade" name="trade" required placeholder="Landscaping and interior cleaning">
           </div>
           <div class="field">
+            <label for="phone">Phone (optional)</label>
+            <input type="tel" id="phone" name="phone" placeholder="(703) 555-0142">
+          </div>
+          <div class="field">
             <label for="town">Town / service area</label>
-            <input type="text" id="town" name="town" placeholder="Chesterfield, VA">
+            <input type="text" id="town" name="service_area" placeholder="Chesterfield, VA">
           </div>
           <div class="field">
             <label for="site">Current website (if you have one)</label>
-            <input type="text" id="site" name="site" placeholder="None yet">
+            <input type="text" id="site" name="current_site" placeholder="None yet">
           </div>
           <div class="field">
             <label for="goal">What do you want the site to do?</label>
@@ -92,8 +104,9 @@
             <label for="notes">Anything else?</label>
             <textarea id="notes" name="notes" placeholder="Photos I have, deadlines, questions..."></textarea>
           </div>
+          <input type="hidden" name="_subject" value="Free Sample Request — Fieldcraft">
           <button type="submit" class="btn lg" style="width:100%;">Send My Request</button>
-          <p style="font-size:13px;color:var(--ink-soft);margin-top:14px;text-align:center;">Opens your email app with the details filled in.</p>
+          <p id="form-status" role="status" aria-live="polite" style="font-size:13.5px;margin-top:14px;text-align:center;color:var(--ink-soft);">I reply the same business day.</p>
         </form>
       </div>
 
@@ -210,21 +223,52 @@
 </footer>
 
 <script>
-function buildEmail(e){
-  e.preventDefault();
-  var g = function(id){ var el = document.getElementById(id); return el ? el.value.trim() : ''; };
-  var body =
-    'Business name: ' + g('biz') + '\n' +
-    'What they do: ' + g('trade') + '\n' +
-    'Service area: ' + (g('town') || '—') + '\n' +
-    'Current website: ' + (g('site') || 'None') + '\n' +
-    'Main goal: ' + g('goal') + '\n\n' +
-    'Notes:\n' + (g('notes') || '—');
-  window.location.href = 'mailto:davidalancole@outlook.com'
-    + '?subject=' + encodeURIComponent('Free Sample Request — ' + g('biz'))
-    + '&body=' + encodeURIComponent(body);
-  return false;
-}
+(function(){
+  var form = document.getElementById('sample-form');
+  var status = document.getElementById('form-status');
+  if(!form) return;
+  var endpoint = form.getAttribute('action') || '';
+  var configured = endpoint.indexOf('YOUR_FORM_ID') === -1;
+
+  function mailtoFallback(){
+    var g = function(id){ var e=document.getElementById(id); return e ? e.value.trim() : ''; };
+    var body = 'Name: '+g('name')+'\nEmail: '+g('email')+'\nBusiness: '+g('biz')
+      +'\nWhat they do: '+g('trade')+'\nPhone: '+(g('phone')||'-')
+      +'\nService area: '+(g('town')||'-')+'\nCurrent website: '+(g('site')||'None')
+      +'\nGoal: '+g('goal')+'\n\nNotes:\n'+(g('notes')||'-');
+    window.location.href = 'mailto:davidalancole@outlook.com?subject='
+      + encodeURIComponent('Free Sample Request - '+g('biz'))
+      + '&body=' + encodeURIComponent(body);
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!form.checkValidity()){ form.reportValidity(); return; }
+
+    if(!configured){ mailtoFallback(); return; }
+
+    var btn = form.querySelector('button[type=submit]');
+    btn.disabled = true; btn.textContent = 'Sending...';
+    status.textContent = '';
+
+    fetch(endpoint, {
+      method:'POST',
+      body: new FormData(form),
+      headers:{'Accept':'application/json'}
+    }).then(function(r){
+      if(r.ok){
+        form.innerHTML = '<div style="text-align:center;padding:36px 10px;">'
+          + '<div style="font-family:Newsreader,serif;font-size:24px;color:var(--ink);margin-bottom:10px;">Got it — thank you.</div>'
+          + '<p style="font-size:15px;">I\'ll reply the same business day, and your free sample will be ready within 3 business days.</p></div>';
+      } else { throw new Error('bad response'); }
+    }).catch(function(){
+      btn.disabled = false; btn.textContent = 'Send My Request';
+      status.innerHTML = 'Something went wrong. <a href="#" id="fallback-link" style="color:var(--accent);font-weight:600;text-decoration:underline;">Send it by email instead</a>.';
+      var fl = document.getElementById('fallback-link');
+      if(fl) fl.addEventListener('click', function(ev){ ev.preventDefault(); mailtoFallback(); });
+    });
+  });
+})();
 </script>
 <script src="js/main.js"></script>
 </body>
