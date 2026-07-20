@@ -16,15 +16,14 @@
     reveals.forEach(function (el) { el.classList.add('is-visible'); });
   }
 
-  // Safety net: if anything is still hidden after load, show it.
-  window.addEventListener('load', function () {
-    setTimeout(function () {
-      document.querySelectorAll('[data-reveal]:not(.is-visible)').forEach(function (el) {
-        var rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight) el.classList.add('is-visible');
-      });
-    }, 400);
-  });
+  // Safety net: nothing may stay invisible. If the observer hasn't revealed a
+  // section within 2.5s of load, reveal everything unconditionally.
+  function revealAll() {
+    document.querySelectorAll('[data-reveal]:not(.is-visible)')
+      .forEach(function (el) { el.classList.add('is-visible'); });
+  }
+  window.addEventListener('load', function () { setTimeout(revealAll, 2500); });
+  setTimeout(revealAll, 4000);
 
   // Mobile nav toggle
   var toggle = document.querySelector('.nav-toggle');
